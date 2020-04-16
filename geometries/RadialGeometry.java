@@ -1,11 +1,5 @@
 package geometries;
-
-import primitives.Coordinate;
-import primitives.Point3D;
-import primitives.Vector;
-
 import java.util.Objects;
-
 import static primitives.Util.isZero;
 
 public abstract class  RadialGeometry implements Geometry {
@@ -15,7 +9,10 @@ public abstract class  RadialGeometry implements Geometry {
      * default constructor
      * @param radius
      */
+
     RadialGeometry(double radius) {
+        if (isZero(_radius) || (_radius < 0.0))
+            throw new IllegalArgumentException("radius "+ _radius +" is not valid");
         this._radius = radius;
     }
 

@@ -22,9 +22,9 @@ public class Point3D {
      * @param z to class Coordinate z
      */
     public Point3D(Coordinate x, Coordinate y, Coordinate z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.x = new Coordinate(x);
+        this.y = new Coordinate(y);
+        this.z = new Coordinate(z);
     }
     /**
      * contractor for Point3D when i got 3 numbers and call to first contractor
@@ -97,9 +97,9 @@ public class Point3D {
      */
     public double distanceSquared(Point3D temp){
         return
-                (x.get()-temp.getX().get() * x.get()-temp.getX().get())
-                        +(y.get()-temp.getY().get() * y.get()-temp.getY().get())
-                        + (z.get()-temp.getZ().get() * z.get()-temp.getZ().get());
+            (x.get()-temp.getX().get() * x.get()-temp.getX().get())
+            +(y.get()-temp.getY().get() * y.get()-temp.getY().get())
+            + (z.get()-temp.getZ().get() * z.get()-temp.getZ().get());
     }
 
     /**

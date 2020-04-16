@@ -12,7 +12,7 @@ public class Vector {
     public Vector(Point3D head) {
         if (head.equals(Point3D.ZERO))
             throw new IllegalArgumentException("Illegal input");
-        this.head = head;
+        this.head = new Point3D(head.x._coord, head.y._coord, head.z._coord);
     }
 
     /**
@@ -22,9 +22,9 @@ public class Vector {
      * @param _z
      */
     public Vector(Coordinate _x, Coordinate _y, Coordinate _z) {
-        this.head.x = _x;
-        this.head.y = _y;
-        this.head.z = _z;
+        this.head.x = new Coordinate(_x);
+        this.head.y = new Coordinate(_y);
+        this.head.z = new Coordinate(_z);
     }
 
     /**
@@ -32,7 +32,16 @@ public class Vector {
      * @param v
      */
     public Vector(Vector v) {
-        head= new Point3D(v.getHead());
+        this(v.head);
+    }
+
+    /**
+     *
+     * @param pointA
+     * @param pointB
+     */
+    public Vector (Point3D pointA, Point3D pointB){
+        this(pointA.subtract(pointB));
     }
 
     /**
@@ -42,13 +51,11 @@ public class Vector {
      * @param z
      */
     public Vector(double x, double y, double z) {
-        if (head.equals(Point3D.ZERO))
-            throw new IllegalArgumentException("Illegal input");
-        this.head = new Point3D(x, y, z);
+        this(new Point3D(x, y, z));
     }
     /********************************* getter **********************/
     public Point3D getHead() {
-        return head;
+        return new Point3D(head);
     }
     @Override
     public boolean equals(Object o) {
@@ -79,8 +86,8 @@ public class Vector {
     }
 
     /**
-     *
-     * @param action add between 2 vectors
+     *0
+     * @param
      * @return new vector
      */
     public Vector add(Vector v) {
@@ -91,20 +98,20 @@ public class Vector {
     }
 
     /**
-     *
+     *0
      * @param a multiplication of a
      * @return new vector
      */
-    public Vector scale(int a) {
+    public Vector scale(double a) {
         return new Vector(new Point3D(
-                this.head.getX()._coord * a,
-                this.head.getY()._coord * a,
-                this.head.getZ()._coord * a));
+                        new Coordinate(a*head.x._coord),
+                        new Coordinate(a*head.y._coord),
+                        new Coordinate(a*head.z._coord)));
     }
 
     /**
-     *
-     * @param dot product action between this of v3
+     *0
+     * @param
      * @return double number
      */
     public double dotProduct(Vector v3) {
@@ -114,8 +121,8 @@ public class Vector {
     }
 
     /**
-     *
-     * @param crossProduct action between this of edge2
+     *0
+     * @param
      * @return new vector
      */
     public Vector crossProduct(Vector edge2) {
@@ -126,6 +133,7 @@ public class Vector {
     }
 
     /**
+     * 0
      * length of vector in pow
      * @return double number of distance in pow
      */
@@ -142,16 +150,24 @@ public class Vector {
     }
 
     /**
+     * 0
      * normalise vector action
      * @return this vector after change
      */
     public Vector normalize() {
-        Vector v=new Vector(new Point3D(
-                this.head.x._coord/this.length()
-                ,this.head.y._coord/this.length()
-                ,this.head.z._coord/this.length()));
-        this.head=v.getHead();
-        return  this;
+        double x = this.head.x._coord;
+        double y = this.head.y._coord;
+        double z = this.head.z._coord;
+        double length = this.length();
+
+        if (length == 0)
+            throw new ArithmeticException("divide  by zero");
+
+        this.head.x= new Coordinate((x/length));
+        this.head.y= new Coordinate((y/length));
+        this.head.z= new Coordinate((z/length));
+
+        return this;
     }
 
     /**
@@ -159,7 +175,7 @@ public class Vector {
      * @return new vector
      */
     public Vector normalized() {
-        Vector v = new Vector(this.head);
+        Vector v = new Vector(this);
         return v.normalize();
     }
 
