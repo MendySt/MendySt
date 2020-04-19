@@ -1,4 +1,8 @@
 package geometries;
+import primitives.Point3D;
+import primitives.Ray;
+
+import java.util.List;
 import java.util.Objects;
 import static primitives.Util.isZero;
 
@@ -29,6 +33,7 @@ public abstract class  RadialGeometry implements Geometry {
     public double get_radius() {
         return _radius;
     }
-
+    // need to check why
+    public abstract List<Point3D> findIntersections(Ray ray);
 }
 
