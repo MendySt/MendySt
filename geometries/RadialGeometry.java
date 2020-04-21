@@ -15,8 +15,8 @@ public abstract class  RadialGeometry implements Geometry {
      */
 
     RadialGeometry(double radius) {
-        if (isZero(_radius) || (_radius < 0.0))
-            throw new IllegalArgumentException("radius "+ _radius +" is not valid");
+        //if (isZero(_radius) || (_radius < 0.0))
+           // throw new IllegalArgumentException("radius "+ _radius +" is not valid");
         this._radius = radius;
     }
 
@@ -34,6 +34,6 @@ public abstract class  RadialGeometry implements Geometry {
         return _radius;
     }
     // need to check why
-    public abstract List<Point3D> findIntersections(Ray ray);
+   // public abstract List<Point3D> findIntersections(Ray ray);
 }
 

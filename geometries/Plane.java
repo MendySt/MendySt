@@ -1,62 +1,43 @@
 package geometries;
 
 import primitives.Point3D;
-import primitives.*;
-import java.util.List;
-import java.util.Objects;
+import primitives.Vector;
 
 public class Plane implements Geometry {
+    private Point3D _point;
+    private Vector _normal;
 
-    Point3D _point;
-    Vector _normal;
-
-    public Plane(Point3D p1, Point3D p2, Point3D p3) {
-         _point= new Point3D(p1);
-         Vector U = p1.subtract(p2);
-         Vector V = p1.subtract(p3);
-         Vector N = U.crossProduct(V);
-         N.normalize();
-         _normal.scale(-1);
-    }
-
-
-
-
-    public Plane(Point3D point3D, Vector vector){
-        _point= new Point3D(point3D);
-        _normal = new Vector( vector.normalize());
-        _normal.scale(-1);
-    }
-
-    @Override
-    public Vector getNormal(Point3D point3D) {
-        return _normal;
+    public Point3D get_point() {
+        return new Point3D(_point);
     }
 
     public Vector getNormal() {
-        return _normal;
+        return new Vector(_normal);
     }
 
-    public Point3D get_point() {
-        return _point;
+    public Plane(Point3D p1, Point3D p2, Point3D p3) {
+        Vector U = p1.subtract(p2);
+        Vector V = p1.subtract(p3);
+        Vector N = U.crossProduct(V);
+        N.normalize();
+
+        this._normal = N.scale(-1);
+        this._point = p1;
+    }
+
+    public Plane(Point3D point, Vector normal) {
+        this._point = new Point3D(point);
+        this._normal = new Vector(normal.normalized());
+    }
+
+    @Override
+    public Vector getNormal(Point3D point) {
+        return _normal;
     }
 
     @Override
     public String toString() {
-        return "Plane{" +
-                "_point=" + _point +
-                ", _normal=" + _normal +
-                '}';
+        return "_point=" + _point +
+                ", _normal=" + _normal;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Plane plane = (Plane) o;
-        return Objects.equals(_point, plane._point) &&
-                Objects.equals(_normal, plane._normal);
-    }
-
-
 }

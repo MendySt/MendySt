@@ -1,182 +1,159 @@
-
 package primitives;
 
+import java.nio.charset.CoderResult;
+import java.util.Objects;
+
+/**
+ * Vector is the .......vechu .....
+ * TO DO
+ * comments are missing
+ *
+ * @author Mendy
+ */
 public class Vector {
-    Point3D head;
-
-//    public final static Vector zero = new Vector( new Point3D(0.0,0.0,0.0));
+    Point3D _head;
 
     /**
-     * @param head constructor input head
+     * @param p
      */
-    public Vector(Point3D head) {
-        if (head.equals(Point3D.ZERO))
-            throw new IllegalArgumentException("Illegal input");
-        this.head = new Point3D(head.x._coord, head.y._coord, head.z._coord);
+    public Vector(Point3D p) {
+        if (p.equals(Point3D.ZERO)) {
+            throw new IllegalArgumentException("Point3D(0.0,0.0,0.0) not valid for vector head");
+        }
+        this._head = new Point3D(p._x._coord, p._y._coord, p._z._coord);
     }
 
     /**
-     * constructor of input 3 coordinates
-     * @param _x
-     * @param _y
-     * @param _z
-     */
-    public Vector(Coordinate _x, Coordinate _y, Coordinate _z) {
-        this.head.x = new Coordinate(_x);
-        this.head.y = new Coordinate(_y);
-        this.head.z = new Coordinate(_z);
-    }
-
-    /**
-     * copy constructor
      * @param v
      */
     public Vector(Vector v) {
-        this(v.head);
+        this(v._head);
+    }
+
+    public Vector(Point3D p1, Point3D p2) {
+        this(p1.subtract(p2));
+    }
+
+    public Vector(double x,double y, double z) {
+        this(new Point3D(x,y,z));
     }
 
     /**
-     *
-     * @param pointA
-     * @param pointB
+     * @return
      */
-    public Vector (Point3D pointA, Point3D pointB){
-        this(pointA.subtract(pointB));
+    public Point3D get_head() {
+        return new Point3D(_head._x._coord, _head._y._coord, _head._z._coord);
     }
 
     /**
-     * constructor of input 3 doubles for return vector
-     * @param x
-     * @param y
-     * @param z
+     * @param vector
      */
-    public Vector(double x, double y, double z) {
-        this(new Point3D(x, y, z));
+    public Vector  add(Vector vector)
+    {
+        return  new Vector(this._head.add(vector));
     }
-    /********************************* getter **********************/
-    public Point3D getHead() {
-        return new Point3D(head);
+
+    /**
+     * @param vector
+     */
+    public Vector subtract(Vector vector) {
+        return  this._head.subtract(vector._head);
     }
+
+    /**
+     * @param scalingFacor
+     */
+    public Vector scale(double scalingFacor) {
+        return new Vector(
+                new Point3D(
+                        new Coordinate(scalingFacor * _head._x._coord),
+                        new Coordinate(scalingFacor * _head._y._coord),
+                        new Coordinate(scalingFacor * _head._z._coord)));
+    }
+
+    /**
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null) return false;
-        if (!(o instanceof Vector)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Vector vector = (Vector) o;
-        return head.equals(vector.head);
-    }
-
-    @Override
-    public String toString() {
-        return "Vector{" +
-                "head=" + head +
-                '}';
+        return _head.equals(vector._head);
     }
 
     /**
-     * subtract between 2 vectors
+     * @param v
+     * @return
+     */
+    public double dotProduct(Vector v) {
+        return (this._head._x._coord * v._head._x._coord +
+                this._head._y._coord * v._head._y._coord +
+                this._head._z._coord * v._head._z._coord);
+    }
+
+    /**
      * @param v the second vector
-     * @return new vector
+     * @return new Vector for the crossproduct (this X v)
      */
-    public Vector subtract(Vector v) {
-        return new Vector(new Point3D(
-                v.head.getX()._coord - this.head.getX()._coord,
-                v.head.getY()._coord - this.head.getY()._coord,
-                v.head.getZ()._coord - this.head.getZ()._coord));
+    public Vector crossProduct(Vector v) {
+        double w1 = this._head._y._coord * v._head._z._coord - this._head._z._coord * v._head._y._coord;
+        double w2 = this._head._z._coord * v._head._x._coord - this._head._x._coord * v._head._z._coord;
+        double w3 = this._head._x._coord * v._head._y._coord - this._head._y._coord * v._head._x._coord;
+
+        return new Vector(new Point3D(w1, w2, w3));
     }
 
     /**
-     *0
-     * @param
-     * @return new vector
-     */
-    public Vector add(Vector v) {
-        return new Vector(new Point3D(
-                v.head.getX()._coord + this.head.getX()._coord,
-                v.head.getY()._coord + this.head.getY()._coord,
-                v.head.getZ()._coord + this.head.getZ()._coord));
-    }
-
-    /**
-     *0
-     * @param a multiplication of a
-     * @return new vector
-     */
-    public Vector scale(double a) {
-        return new Vector(new Point3D(
-                        new Coordinate(a*head.x._coord),
-                        new Coordinate(a*head.y._coord),
-                        new Coordinate(a*head.z._coord)));
-    }
-
-    /**
-     *0
-     * @param
-     * @return double number
-     */
-    public double dotProduct(Vector v3) {
-        return (this.head.getX()._coord * v3.head.getX()._coord +
-                this.head.getY()._coord * v3.head.getY()._coord +
-                this.head.getZ()._coord * v3.head.getZ()._coord);
-    }
-
-    /**
-     *0
-     * @param
-     * @return new vector
-     */
-    public Vector crossProduct(Vector edge2) {
-        return new Vector(new Point3D(
-                this.head.getY()._coord * edge2.head.getZ()._coord - this.head.getZ()._coord * edge2.head.getY()._coord,
-                this.head.getZ()._coord * edge2.head.getX()._coord - this.head.getX()._coord * edge2.head.getZ()._coord,
-                this.head.getX()._coord * edge2.head.getY()._coord - this.head.getY()._coord * edge2.head.getX()._coord));
-    }
-
-    /**
-     * 0
-     * length of vector in pow
-     * @return double number of distance in pow
+     * @return
      */
     public double lengthSquared() {
-        return Point3D.ZERO.distanceSquared(this.getHead());
+        double xx = this._head._x._coord * this._head._x._coord;
+        double yy = this._head._y._coord * this._head._y._coord;
+        double zz = this._head._z._coord * this._head._z._coord;
+
+        return xx + yy + zz;
+
     }
 
     /**
-     * length of vector
-     * @return double number of distance
+     * @return
      */
     public double length() {
-        return Math.sqrt(this.lengthSquared());
+        return Math.sqrt(lengthSquared());
     }
 
     /**
-     * 0
-     * normalise vector action
-     * @return this vector after change
+     * @return the same Vector after normalisation
+     * @throws ArithmeticException if length = 0
      */
     public Vector normalize() {
-        double x = this.head.x._coord;
-        double y = this.head.y._coord;
-        double z = this.head.z._coord;
+
+        double x = this._head._x._coord;
+        double y = this._head._y._coord;
+        double z = this._head._z._coord;
+
         double length = this.length();
 
         if (length == 0)
-            throw new ArithmeticException("divide  by zero");
+            throw new ArithmeticException("divide by Zero");
 
-        this.head.x= new Coordinate((x/length));
-        this.head.y= new Coordinate((y/length));
-        this.head.z= new Coordinate((z/length));
+        this._head._x = new Coordinate(x / length);
+        this._head._y = new Coordinate(y / length);
+        this._head._z = new Coordinate(z / length);
 
         return this;
     }
 
-    /**
-     *  normalise vector action
-     * @return new vector
-     */
     public Vector normalized() {
-        Vector v = new Vector(this);
-        return v.normalize();
+        Vector vector = new Vector(this);
+        vector.normalize();
+        return vector;
     }
 
+    @Override
+    public String toString() {
+        return  _head .toString();
+    }
 }

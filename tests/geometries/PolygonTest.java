@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Dan Zilberstein modified for JUnit 5 ny Eliezer Gensburger
  */
-class PolygonTest {
+public class PolygonTest {
     /**
      * Test method for
      * {@link geometries.Polygon# Polygon(primitives.Point3D, primitives.Point3D, primitives.Point3D, primitives.Point3D)}.
